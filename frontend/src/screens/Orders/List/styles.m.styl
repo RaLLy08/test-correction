@@ -1,4 +1,51 @@
 @import '../../../common.styl'
 
+.screenWrapper
+  height auto
+  width 100%
+  display flex
+  justify-content center
+
 .screen
-  background white
+  display flex
+  justify-content space-between
+  flex-direction column
+  min-width 60%
+
+.table
+  display table
+  border-spacing 5.5em 7px
+  background-color white
+
+.head
+  display table-header-group;
+  line-height: 2.1em;
+
+.row
+  display table-row
+
+.cell
+  display table-cell
+  text-align center
+  
+.body
+  display table-row-group;
+
+.pagination
+  display flex
+  align-self flex-end
+  margin-bottom 1em
+
+.loadingWrapper
+  display flex
+  justify-content center
+  align-items center
+  height 100%
+
+.loading 
+  display flex
+
+.pageNumber
+  display flex
+  align-self center
+  margin 0px 16px;

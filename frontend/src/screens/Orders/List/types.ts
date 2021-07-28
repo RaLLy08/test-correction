@@ -26,6 +26,12 @@ export type OrdersQueryData = {
   };
 };
 
+export type OrdersFilter = {
+  page?: number;
+  limit?: 20 | 50 | 100 | 250;
+  filter?: OrdersListGqlFilter;
+};
+
 export interface OrdersListGqlFilter {
   numbers?: String[];
   extendedStatus?: String[];

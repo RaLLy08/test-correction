@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { OrdersListItem } from "./types";
+import { OrdersListItem, OrdersFilter } from "./types";
 import { createBrowserHistory, History } from "history";
 import client from "api/gql";
 import { GET_ORDERS_QUERY } from "~/screens/Orders/List/queries";
@@ -42,6 +42,19 @@ export default class OrdersListState {
     }
   }
 
+  setPageFromUrl(): void {
+    const url = new URL(window.location.href);
+    const page = url.searchParams.get("page");
+
+    if (page) {
+      if (+page) {
+        this.page = +page
+      } else {
+        this.history.push(url.pathname);
+      }
+    }
+  }
+
   nextPage(): void {
     if (this.page >= this.totalPages) return;
     this.setPage(this.page + 1);
@@ -61,21 +74,35 @@ export default class OrdersListState {
   }
 
   get canNext(): boolean {
-    return this.page < this.totalPages;
+    return (this.page < this.totalPages) && !this.loading;
   }
 
   get canPrev(): boolean {
-    return this.page > 1;
+    return (this.page > 1) && (this.page <= this.totalPages) && !this.loading;
   }
 
   async loadOrders() {
-    this.loading = true;
-    this.loading = false;
+    this.startLoading();
+    const ordersFilter: OrdersFilter = {
+      page: this.page,
+    };
+
+    const {
+        data: {
+            getOrders: { orders, pagination },
+        },
+    } = await client.query(GET_ORDERS_QUERY, ordersFilter).toPromise();
+      
+    this.setOrders(orders);
+    this.setTotalPages(pagination.totalPageCount);
+
+    this.stopLoading();
   }
 
   initialize() {
     if (this.initialized) return;
     this.initialized = true;
+    this.setPageFromUrl();
     this.loadOrders();
   }
 }

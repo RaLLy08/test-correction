@@ -8,23 +8,29 @@ import Tag from "components/Tag";
 import OrderStatus from "components/OrderStatus";
 import DeliveryType from "components/DeliveryType";
 import { Link } from "react-router-dom";
-
+ 
 const ListItem = observer(
   ({ order }: { order: OrdersListItem }): JSX.Element => {
     return (
-      <div className={styles.row}>
-        <div className={styles.orderNumber}>
-          <Link to={`/orders/${order.id}`}>{order.number}</Link>
+        <div className={styles.row}>
+            <div className={styles.cell}>
+                <div className={styles.orderNumber}>
+                    <Link to={`/orders/${order.id}`}>{order.number}</Link>
+                </div>
+            </div>
+            <div className={styles.cell}>
+                {moment(order.createdAt).format("DD.MM.YYYY HH:mm")}
+            </div>
+            <div className={styles.cell} title={order.delivery?.code}>
+                {order.delivery && <DeliveryType code={order.delivery?.code} />}
+            </div>
+            <div className={styles.cell}>
+                {moment().from(order.createdAt, true)}
+            </div>
+            <div className={styles.cell} title={order.status}>
+                <OrderStatus code={order.status} />
+            </div>
         </div>
-        <div>{moment(order.createdAt).format("DD.MM.YYYY HH:mm")}</div>
-        <div title={order.delivery?.code}>
-          {order.delivery && <DeliveryType code={order.delivery?.code} />}
-        </div>
-        <div>{moment().from(order.createdAt, true)}</div>
-        <div title={order.status}>
-          <OrderStatus code={order.status} />
-        </div>
-      </div>
     );
   }
 );
