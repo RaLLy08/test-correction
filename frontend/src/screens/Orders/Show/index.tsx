@@ -27,11 +27,13 @@ const OrdersShow = observer(
             <div className={styles.screen}>
                 {!state.loading && state.order && (
                     <>
-                        <div>{state.order.number}</div>
+                        <div className={styles.header}>
+                            <div>Номер: {state.order.number}</div>
+                        </div>
                         <div className={styles.items}>
-                            {map(state.order.items,
-                              item => <Item key={item.id} item={item}/>
-                            )}
+                            {map(state.order.items, (item) => (
+                                <Item key={item.id} item={item} />
+                            ))}
                         </div>
                     </>
                 )}

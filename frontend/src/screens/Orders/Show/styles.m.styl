@@ -2,11 +2,22 @@
 
 .screenWrapper
   padding 28px
+  height 100vh
+  width 100%
+  display flex
+  justify-content center
 
 .screen
   background white
-  coolScrollbar()
-  
+  padding 28px
+  display flex
+  flex-direction column
+  min-width 60%
 
 .items
+  overflow auto
   display block
+  coolScrollbar()
+
+.header
+  margin-bottom 2em
